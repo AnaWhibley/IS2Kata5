@@ -2,6 +2,7 @@ package kata5;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,6 +22,9 @@ public class Kata5 {
         try {
             connection = DriverManager.getConnection(URL_BD_SQLite);
             System.out.println("Base de Datos conectada..");
+            selectData_PEOPLE(connection);
+            System.out.println("***************");
+            insertData_PEOPLE(connection);
             selectData_PEOPLE(connection);
         }
         catch(SQLException exception) {
@@ -54,6 +58,21 @@ public class Kata5 {
         }
         catch(SQLException exception) {
             System.out.println("Error en Kata5::select(SQLException) " + exception.getMessage());
+        }
+    }
+    
+    private static void insertData_PEOPLE(Connection connection) {
+        String SQL = "INSERT INTO PEOPLE(ID,Nombre,Apellidos,Departamento) VALUES (?,?,?,?)";
+        try {
+            PreparedStatement preparedstatement = connection.prepareStatement(SQL);
+            preparedstatement.setInt(1,26);
+            preparedstatement.setString(2,"Albert");
+            preparedstatement.setString(3,"Rivera");
+            preparedstatement.setString(4, "Ciencias Políticas");
+            preparedstatement.executeUpdate();
+        }
+        catch(SQLException exception) {
+            System.out.println("Error en Kata5::preparedStatement(SQLException) " + exception.getMessage());
         }
     }
     
